@@ -65,9 +65,28 @@ public class BookController {
         }
     }
 
+    @DeleteMapping("/books/{id}")
+    public void deleteBook(@PathVariable ("id") long id) {
+
+        bookRepository.deleteById(id);
+    }
 
 
+    @PutMapping("/books/{id}")
+    public ResponseEntity<Object> updateBook(@RequestBody Book book, @PathVariable long id) {
 
+
+      Optional<Book> bookData =   bookRepository.findById(id);
+
+      if(!bookData.isPresent()){
+
+          return ResponseEntity.noContent().build();
+      }
+
+        book.setId(id);
+        bookRepository.save(book);
+        return ResponseEntity.noContent().build();
+    }
 
 
 
